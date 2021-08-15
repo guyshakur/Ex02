@@ -10,6 +10,7 @@ using FacebookWinFormsApp.FinanceFeature;
 using FacebookWinFormsApp.CostumText;
 using WPFCustomMessageBox;
 using MessageBox = System.Windows.Forms.MessageBox;
+using System.Threading;
 
 namespace FacebookWinFormsApp
 {
@@ -17,14 +18,19 @@ namespace FacebookWinFormsApp
     {
         private readonly User r_LoggedUser;
         private readonly List<object> r_LastPostsCollection = new List<object>();
+        public Thread LoginDetailsThread { get; set; }
 
         public MainForm(User m_LoginUser)
         {
             r_LoggedUser = m_LoginUser;
-            InitializeComponent();
-            fetchLoginDetails();
+            //InitializeComponent();
+            //fetchLoginDetails();
+            //new Thread(fetchLoginDetails).Start();
+            
             fillCustomPostsBoxFromFile();
+               
         }
+        
 
         public CustomText m_customText { get; set; }
 
@@ -36,18 +42,29 @@ namespace FacebookWinFormsApp
             }
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            InitializeComponent();
+            fetchLoginDetails();
+        }
+
+       
+
+
         public void fetchLoginDetails()
         {
-            pictureBoxProfile.ImageLocation = r_LoggedUser.PictureLargeURL;
+            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = r_LoggedUser.PictureLargeURL));
             Text = $"{r_LoggedUser.FirstName} {r_LoggedUser.LastName}";
-            fetchSelfDetails();
+            new Thread(fetchSelfDetails).Start();
 
             try
             {
                 fetchWeatherDetails(r_LoggedUser.Location.Name);
+               //fetchWeatherDetails(r_LoggedUser.Location.Name);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Windows.MessageBox.Show(ex.Message.ToString());
                 System.Windows.MessageBox.Show("Can't fetch weather details");
             }
         }
@@ -75,22 +92,24 @@ namespace FacebookWinFormsApp
 
         private void fetchSelfDetails()
         {
-            labelFirstName.Text += r_LoggedUser.FirstName;
-            labelLastName.Text += r_LoggedUser.LastName;
-            labelEmail.Text += r_LoggedUser.Email;
-            labelGender.Text += r_LoggedUser.Gender.ToString();
-            labelBirthday.Text += r_LoggedUser.Birthday;
+           labelFirstName.Text += r_LoggedUser.FirstName;
+           labelLastName.Text += r_LoggedUser.LastName;
+           labelEmail.Text += r_LoggedUser.Email;
+           labelGender.Text += r_LoggedUser.Gender.ToString();
+           labelBirthday.Text += r_LoggedUser.Birthday;
         }
 
         private void fetchLikedPages()
         {
-            listBoxLikedPages.Items.Clear();
+            //listBoxLikedPages.Items.Clear();
+            listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Clear()));
 
             try
             {
                 foreach (Page page in r_LoggedUser.LikedPages)
                 {
-                    listBoxLikedPages.Items.Add(page.Name);
+                    //listBoxLikedPages.Items.Add(page.Name);
+                    listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Add(page.Name)));
                 }
             }
             catch (Exception exception)
@@ -100,10 +119,12 @@ namespace FacebookWinFormsApp
 
             if (listBoxLikedPages.Items.Count == 0)
             {
-                listBoxLikedPages.Items.Add("There are no liked pages for this user");
+                listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Add("There are no liked pages for this user")));
+                //listBoxLikedPages.Items.Add("There are no liked pages for this user");
             }
         }
 
+        
         private void buttonLogOut_Click(object sender, EventArgs e)
         {
             FacebookService.LogoutWithUI();
@@ -121,19 +142,23 @@ namespace FacebookWinFormsApp
 
         private void buttonLikedPages_Click(object sender, EventArgs e)
         {
-            fetchLikedPages();
+            new Thread(fetchLikedPages).Start();
         }
 
         private void buttonFetchPosts_Click(object sender, EventArgs e)
         {
-            fetchPosts();
+            new Thread(fetchPosts).Start();
         }
 
         private void fetchPosts()
         {
             r_LoggedUser.ReFetch();
-            listBoxPosts.Items.Clear();
-            listBoxPosts.DisplayMember = "Message";
+            //listBoxPosts.Items.Clear();
+            listBoxPosts.Invoke(new Action(() => listBoxPosts.Items.Clear()));
+            // listBoxComments.Invoke(new Action(() => listBoxComments.Items.Clear()));
+            //listBoxComments.Items.Clear();
+            listBoxPosts.Invoke(new Action(() => listBoxPosts.DisplayMember = "Message"));
+            //listBoxPosts.DisplayMember = "Message";
 
             try
             {
@@ -141,7 +166,8 @@ namespace FacebookWinFormsApp
                 {
                     if (post.Message != null)
                     {
-                        listBoxPosts.Items.Add(post);
+                        //listBoxPosts.Items.Add(post);
+                        listBoxPosts.Invoke(new Action(() => listBoxPosts.Items.Add(post)));
                     }
                 }
             }
@@ -227,38 +253,49 @@ namespace FacebookWinFormsApp
         private void listBoxLikedPages_SelectedIndexChanged(object sender, EventArgs e)
         {
             Page selected = r_LoggedUser.LikedPages[listBoxLikedPages.SelectedIndex];
-            webBrowserPages.Navigate(selected.URL);
+            new Thread(()=> webBrowserPages.Navigate(selected.URL)).Start();
+            
         }
 
         private void listBoxPhotos_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            new Thread(listBoxPhotosSelectedPhoto).Start();
+            
+        }
+
+        private void listBoxPhotosSelectedPhoto()
         {
             if (listBoxPhotos.SelectedItem != null)
             {
                 Photo selectedPhoto = listBoxPhotos.SelectedItem as Photo;
                 if (selectedPhoto != null)
                 {
+                    
                     pictureBoxPhoto.ImageLocation = selectedPhoto.PictureNormalURL;
                     pictureBoxPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
-                    listBoxPhotosComments.DataSource = selectedPhoto.Comments;
+                    listBoxPhotosComments.Invoke(new Action( ()=>listBoxPhotosComments.DataSource = selectedPhoto.Comments));
                 }
             }
         }
 
         private void buttonFetchAlbums_Click(object sender, EventArgs e)
         {
-            fetchAlbums();
+            new Thread(fetchAlbums).Start();
         }
 
         private void fetchAlbums()
         {
-            listBoxAlbums.Items.Clear();
-            listBoxAlbums.DisplayMember = "Name";
+            //listBoxAlbums.Items.Clear();
+            //listBoxAlbums.DisplayMember = "Name";
+            listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Clear()));
+            listBoxAlbums.Invoke(new Action(() => listBoxAlbums.DisplayMember = "Name"));
 
             try
             {
                 foreach (Album album in r_LoggedUser.Albums)
                 {
-                    listBoxAlbums.Items.Add(album);
+                    //listBoxAlbums.Items.Add(album);
+                    listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Add(album)));
                 }
             }
             catch (Exception exception)
@@ -283,6 +320,7 @@ namespace FacebookWinFormsApp
                 foreach (Photo photo in albumSelected.Photos)
                 {
                     listBoxPhotos.Items.Add(photo);
+                    //listBoxPhotos.Invoke(new Action(() => listBoxPhotos.Items.Add(photo)));
                 }
             }
             catch (Exception exception)
@@ -344,7 +382,7 @@ namespace FacebookWinFormsApp
         private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User friend = listBoxFriends.SelectedItem as User;
-            fetchFriendsDetails(friend);
+            new Thread( ()=>fetchFriendsDetails(friend)).Start();
         }
 
         private void fetchFriendsDetails(User i_Friend)

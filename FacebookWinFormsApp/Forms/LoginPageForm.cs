@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Forms;
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
@@ -22,7 +23,6 @@ namespace FacebookWinFormsApp
         {
             labelLogin.Text = "Login...";
             Login();
-
             if (rememberMeChecked.Checked)
             {
                 m_AppSettings.LastAcsessToken = m_LoginResult.AccessToken;
