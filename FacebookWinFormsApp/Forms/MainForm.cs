@@ -27,7 +27,6 @@ namespace FacebookWinFormsApp
             //fetchLoginDetails();
             //new Thread(fetchLoginDetails).Start();
             
-            fillCustomPostsBoxFromFile();
                
         }
         
@@ -45,6 +44,7 @@ namespace FacebookWinFormsApp
         protected override void OnLoad(EventArgs e)
         {
             InitializeComponent();
+            fillCustomPostsBoxFromFile();
             fetchLoginDetails();
         }
 
@@ -92,11 +92,16 @@ namespace FacebookWinFormsApp
 
         private void fetchSelfDetails()
         {
-           labelFirstName.Text += r_LoggedUser.FirstName;
-           labelLastName.Text += r_LoggedUser.LastName;
-           labelEmail.Text += r_LoggedUser.Email;
-           labelGender.Text += r_LoggedUser.Gender.ToString();
-           labelBirthday.Text += r_LoggedUser.Birthday;
+            labelFirstName.Invoke(new Action(() => labelFirstName.Text += r_LoggedUser.FirstName));
+            labelLastName.Invoke(new Action(() => labelLastName.Text += r_LoggedUser.LastName));
+            labelEmail.Invoke(new Action(() => labelEmail.Text += r_LoggedUser.Email));
+            labelGender.Invoke(new Action(() => labelGender.Text += r_LoggedUser.Gender.ToString()));
+            labelBirthday.Invoke(new Action(() => labelBirthday.Text += r_LoggedUser.Birthday));
+            //labelFirstName.Text += r_LoggedUser.FirstName;
+            //labelLastName.Text += r_LoggedUser.LastName;
+            //labelEmail.Text += r_LoggedUser.Email;
+            //labelGender.Text += r_LoggedUser.Gender.ToString();
+            //labelBirthday.Text += r_LoggedUser.Birthday;
         }
 
         private void fetchLikedPages()
@@ -483,9 +488,10 @@ namespace FacebookWinFormsApp
                     listBoxCustomPosts.Items.Add(message);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                m_customText.SaveToFile();
+                //m_customText.SaveToFile();
+                throw new Exception(ex.Message);
             }
         }
 
