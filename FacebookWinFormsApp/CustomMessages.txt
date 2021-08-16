@@ -1,4 +1,9 @@
 <?xml version="1.0"?>
 <CustomText xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <TextMessage />
+  <TextMessage>
+    <string>aaa</string>
+    <string>הייתי פה אתמול
+יא שרמוטות 
+של גנתש</string>
+  </TextMessage>
 </CustomText>

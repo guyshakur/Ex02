@@ -3,7 +3,6 @@ using System.Windows;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 using FacebookWinFormsApp.WeatherFeature;
 using FacebookWinFormsApp.FinanceFeature;
@@ -16,30 +15,23 @@ namespace FacebookWinFormsApp
 {
     public partial class MainForm : Form
     {
-        private readonly User r_LoggedUser;
+        public LoginFacade LoginFacade { get; set; }
         private readonly List<object> r_LastPostsCollection = new List<object>();
-        public Thread LoginDetailsThread { get; set; }
 
         public MainForm(User m_LoginUser)
         {
-            r_LoggedUser = m_LoginUser;
+            //r_LoggedUser = m_LoginUser;
             //InitializeComponent();
             //fetchLoginDetails();
             //new Thread(fetchLoginDetails).Start();
-            
+            LoginFacade = new LoginFacade();
+            LoginFacade.LoginUser = m_LoginUser;
                
         }
         
 
         public CustomText m_customText { get; set; }
 
-        public User LoggedUser
-        {
-            get
-            {
-                return r_LoggedUser;
-            }
-        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -51,15 +43,15 @@ namespace FacebookWinFormsApp
        
 
 
-        public void fetchLoginDetails()
+        private void fetchLoginDetails()
         {
-            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = r_LoggedUser.PictureLargeURL));
-            Text = $"{r_LoggedUser.FirstName} {r_LoggedUser.LastName}";
+            pictureBoxProfile.Invoke(new Action(() => pictureBoxProfile.ImageLocation = LoginFacade.LoginUser.PictureLargeURL));
+            Text = $"{LoginFacade.LoginUser.FirstName} {LoginFacade.LoginUser.LastName}";
             new Thread(fetchSelfDetails).Start();
 
             try
             {
-                fetchWeatherDetails(r_LoggedUser.Location.Name);
+                fetchWeatherDetails(LoginFacade.LoginUser.Location.Name);
                //fetchWeatherDetails(r_LoggedUser.Location.Name);
             }
             catch (Exception ex)
@@ -92,16 +84,12 @@ namespace FacebookWinFormsApp
 
         private void fetchSelfDetails()
         {
-            labelFirstName.Invoke(new Action(() => labelFirstName.Text += r_LoggedUser.FirstName));
-            labelLastName.Invoke(new Action(() => labelLastName.Text += r_LoggedUser.LastName));
-            labelEmail.Invoke(new Action(() => labelEmail.Text += r_LoggedUser.Email));
-            labelGender.Invoke(new Action(() => labelGender.Text += r_LoggedUser.Gender.ToString()));
-            labelBirthday.Invoke(new Action(() => labelBirthday.Text += r_LoggedUser.Birthday));
-            //labelFirstName.Text += r_LoggedUser.FirstName;
-            //labelLastName.Text += r_LoggedUser.LastName;
-            //labelEmail.Text += r_LoggedUser.Email;
-            //labelGender.Text += r_LoggedUser.Gender.ToString();
-            //labelBirthday.Text += r_LoggedUser.Birthday;
+            labelFirstName.Invoke(new Action(() => labelFirstName.Text += LoginFacade.LoginUser.FirstName));
+            labelLastName.Invoke(new Action(() => labelLastName.Text += LoginFacade.LoginUser.LastName));
+            labelEmail.Invoke(new Action(() => labelEmail.Text += LoginFacade.LoginUser.Email));
+            labelGender.Invoke(new Action(() => labelGender.Text += LoginFacade.LoginUser.Gender.ToString()));
+            labelBirthday.Invoke(new Action(() => labelBirthday.Text += LoginFacade.LoginUser.Birthday));
+            
         }
 
         private void fetchLikedPages()
@@ -111,7 +99,7 @@ namespace FacebookWinFormsApp
 
             try
             {
-                foreach (Page page in r_LoggedUser.LikedPages)
+                foreach (Page page in LoginFacade.LoginUser.LikedPages)
                 {
                     //listBoxLikedPages.Items.Add(page.Name);
                     listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Add(page.Name)));
@@ -132,16 +120,10 @@ namespace FacebookWinFormsApp
         
         private void buttonLogOut_Click(object sender, EventArgs e)
         {
-            FacebookService.LogoutWithUI();
+            LoginFacade.LogOut();
             LoginPageForm formLoginPage = new LoginPageForm();
-
-            formLoginPage.AppSettings.LastAcsessToken = string.Empty;
-            formLoginPage.AppSettings.RememberUser = false;
-            formLoginPage.AppSettings.SaveToFile();
             Hide();
-
             formLoginPage.ShowDialog();
-            formLoginPage.LoginResult = null;
             Close();
         }
 
@@ -157,7 +139,7 @@ namespace FacebookWinFormsApp
 
         private void fetchPosts()
         {
-            r_LoggedUser.ReFetch();
+            LoginFacade.LoginUser.ReFetch();
             //listBoxPosts.Items.Clear();
             listBoxPosts.Invoke(new Action(() => listBoxPosts.Items.Clear()));
             // listBoxComments.Invoke(new Action(() => listBoxComments.Items.Clear()));
@@ -167,7 +149,7 @@ namespace FacebookWinFormsApp
 
             try
             {
-                foreach (Post post in r_LoggedUser.Posts)
+                foreach (Post post in LoginFacade.LoginUser.Posts)
                 {
                     if (post.Message != null)
                     {
@@ -181,7 +163,7 @@ namespace FacebookWinFormsApp
                 MessageBox.Show(exception.Message);
             }
 
-            if (r_LoggedUser.Posts.Count == 0)
+            if (LoginFacade.LoginUser.Posts.Count == 0)
             {
                 System.Windows.MessageBox.Show("No Posts to retrieve.");
             }
@@ -211,7 +193,7 @@ namespace FacebookWinFormsApp
 
         private void listBoxPosts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Post selected = r_LoggedUser.Posts[listBoxPosts.SelectedIndex];
+            Post selected = LoginFacade.LoginUser.Posts[listBoxPosts.SelectedIndex];
             listBoxComments.DisplayMember = "Message";
             listBoxComments.DataSource = selected.Comments;
         }
@@ -257,7 +239,7 @@ namespace FacebookWinFormsApp
 
         private void listBoxLikedPages_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Page selected = r_LoggedUser.LikedPages[listBoxLikedPages.SelectedIndex];
+            Page selected = LoginFacade.LoginUser.LikedPages[listBoxLikedPages.SelectedIndex];
             new Thread(()=> webBrowserPages.Navigate(selected.URL)).Start();
             
         }
@@ -297,7 +279,7 @@ namespace FacebookWinFormsApp
 
             try
             {
-                foreach (Album album in r_LoggedUser.Albums)
+                foreach (Album album in LoginFacade.LoginUser.Albums)
                 {
                     //listBoxAlbums.Items.Add(album);
                     listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Add(album)));
@@ -346,7 +328,7 @@ namespace FacebookWinFormsApp
                 if (listBoxPhotos.SelectedItem != null)
                 {
                     Photo photo = listBoxPhotos.SelectedItem as Photo;
-                    if (!photo.LikedBy.Contains(r_LoggedUser))
+                    if (!photo.LikedBy.Contains(LoginFacade.LoginUser))
                     {
                         photo.Like();
                     }
@@ -371,7 +353,7 @@ namespace FacebookWinFormsApp
         {
             try
             {
-                r_LoggedUser.PostStatus(textBoxPost.Text);
+                LoginFacade.LoginUser.PostStatus(textBoxPost.Text);
                 System.Windows.MessageBox.Show("Your post shared sucessfully");
             }
             catch (Exception)
@@ -407,7 +389,7 @@ namespace FacebookWinFormsApp
         {
             try
             {
-                fetchWeatherDetails(r_LoggedUser.Location.Name);
+                fetchWeatherDetails(LoginFacade.LoginUser.Location.Name);
             }
             catch (Exception)
             {
@@ -518,11 +500,11 @@ namespace FacebookWinFormsApp
 
         private void buttonFetchFriends_Click(object sender, EventArgs e)
         {
-            if (r_LoggedUser.Friends != null)
+            if (LoginFacade.LoginUser.Friends != null)
             {
                 try
                 {
-                    foreach (User user in r_LoggedUser.Friends)
+                    foreach (User user in LoginFacade.LoginUser.Friends)
                     {
                         listBoxFriends.Items.Add(user);
                     }
@@ -580,7 +562,7 @@ namespace FacebookWinFormsApp
             listBoxGroups.DisplayMember = "Name";
             try
             {
-                foreach (Group group in r_LoggedUser.Groups)
+                foreach (Group group in LoginFacade.LoginUser.Groups)
                 {
                     listBoxGroups.Items.Add(group);
                 }

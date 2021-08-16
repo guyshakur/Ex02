@@ -20,18 +20,20 @@ namespace FacebookWinFormsApp
             Application.SetCompatibleTextRenderingDefault(false);
 
             LoginPageForm formLoginPage = new LoginPageForm();
+            LoginFacade loginFacade = new LoginFacade();
             try
             {
-                formLoginPage.AppSettings = AppSettings.LoadFile();
-                if (!string.IsNullOrEmpty(formLoginPage.AppSettings.LastAcsessToken) && formLoginPage.AppSettings.RememberUser)
+                loginFacade.AppSettings = AppSettings.LoadFile();
+                //formLoginPage.AppSettings = AppSettings.LoadFile();
+                if (!string.IsNullOrEmpty(loginFacade.AppSettings.LastAcsessToken) && loginFacade.AppSettings.RememberUser)
                 {
                     try
                     {
-                        LoginResult loginResult = FacebookService.Connect(formLoginPage.AppSettings.LastAcsessToken);
-                        MainForm mainForm = new MainForm(loginResult.LoggedInUser);
+                        loginFacade.LoginResult = FacebookService.Connect(loginFacade.AppSettings.LastAcsessToken);
+                        MainForm mainForm = new MainForm(loginFacade.LoginResult.LoggedInUser);
                         mainForm.ShowDialog();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         formLoginPage.ShowDialog();
                     }
@@ -41,7 +43,7 @@ namespace FacebookWinFormsApp
                     formLoginPage.ShowDialog();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 formLoginPage.ShowDialog();
             }
