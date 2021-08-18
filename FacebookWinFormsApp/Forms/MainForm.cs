@@ -26,9 +26,9 @@ namespace FacebookWinFormsApp
             //new Thread(fetchLoginDetails).Start();
             LoginFacade = new LoginFacade();
             LoginFacade.LoginUser = m_LoginUser;
-               
+
         }
-        
+
 
         public CustomText m_customText { get; set; }
 
@@ -40,7 +40,7 @@ namespace FacebookWinFormsApp
             fetchLoginDetails();
         }
 
-       
+
 
 
         private void fetchLoginDetails()
@@ -52,7 +52,7 @@ namespace FacebookWinFormsApp
             try
             {
                 fetchWeatherDetails(LoginFacade.LoginUser.Location.Name);
-               //fetchWeatherDetails(r_LoggedUser.Location.Name);
+                //fetchWeatherDetails(r_LoggedUser.Location.Name);
             }
             catch (Exception ex)
             {
@@ -84,12 +84,13 @@ namespace FacebookWinFormsApp
 
         private void fetchSelfDetails()
         {
+            // labelFirstName.Invoke(new Action(() => labelFirstName.Text += LoginFacade.LoginUser.InterestedIn[0].ToString()));
             labelFirstName.Invoke(new Action(() => labelFirstName.Text += LoginFacade.LoginUser.FirstName));
             labelLastName.Invoke(new Action(() => labelLastName.Text += LoginFacade.LoginUser.LastName));
             labelEmail.Invoke(new Action(() => labelEmail.Text += LoginFacade.LoginUser.Email));
             labelGender.Invoke(new Action(() => labelGender.Text += LoginFacade.LoginUser.Gender.ToString()));
             labelBirthday.Invoke(new Action(() => labelBirthday.Text += LoginFacade.LoginUser.Birthday));
-            
+
         }
 
         private void fetchLikedPages()
@@ -117,7 +118,7 @@ namespace FacebookWinFormsApp
             }
         }
 
-        
+
         private void buttonLogOut_Click(object sender, EventArgs e)
         {
             LoginFacade.LogOut();
@@ -146,6 +147,8 @@ namespace FacebookWinFormsApp
             //listBoxComments.Items.Clear();
             listBoxPosts.Invoke(new Action(() => listBoxPosts.DisplayMember = "Message"));
             //listBoxPosts.DisplayMember = "Message";
+
+
 
             try
             {
@@ -240,14 +243,14 @@ namespace FacebookWinFormsApp
         private void listBoxLikedPages_SelectedIndexChanged(object sender, EventArgs e)
         {
             Page selected = LoginFacade.LoginUser.LikedPages[listBoxLikedPages.SelectedIndex];
-            new Thread(()=> webBrowserPages.Navigate(selected.URL)).Start();
-            
+            new Thread(() => webBrowserPages.Navigate(selected.URL)).Start();
+
         }
 
         private void listBoxPhotos_SelectedIndexChanged(object sender, EventArgs e)
         {
             new Thread(listBoxPhotosSelectedPhoto).Start();
-            
+
         }
 
         private void listBoxPhotosSelectedPhoto()
@@ -257,10 +260,10 @@ namespace FacebookWinFormsApp
                 Photo selectedPhoto = listBoxPhotos.SelectedItem as Photo;
                 if (selectedPhoto != null)
                 {
-                    
+
                     pictureBoxPhoto.ImageLocation = selectedPhoto.PictureNormalURL;
                     pictureBoxPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
-                    listBoxPhotosComments.Invoke(new Action( ()=>listBoxPhotosComments.DataSource = selectedPhoto.Comments));
+                    listBoxPhotosComments.Invoke(new Action(() => listBoxPhotosComments.DataSource = selectedPhoto.Comments));
                 }
             }
         }
@@ -298,7 +301,7 @@ namespace FacebookWinFormsApp
 
         private void listBoxAlbums_SelectedIndexChanged(object sender, EventArgs e)
         {
-            listBoxPhotos.Items.Clear();       
+            listBoxPhotos.Items.Clear();
             listBoxPhotos.DisplayMember = "CreatedTime.ToString()";
             Album albumSelected = listBoxAlbums.SelectedItem as Album;
 
@@ -369,13 +372,14 @@ namespace FacebookWinFormsApp
         private void listBoxFriends_SelectedIndexChanged(object sender, EventArgs e)
         {
             User friend = listBoxFriends.SelectedItem as User;
-            new Thread( ()=>fetchFriendsDetails(friend)).Start();
+            new Thread(() => fetchFriendsDetails(friend)).Start();
         }
 
         private void fetchFriendsDetails(User i_Friend)
         {
             if (i_Friend != null)
             {
+
                 labelFriendFirstName.Text = $"First Name: {i_Friend.FirstName}";
                 labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}";
                 labelFriendEmail.Text = $"Email: {i_Friend.Email}";
@@ -535,7 +539,7 @@ namespace FacebookWinFormsApp
                 }
                 else if (result == MessageBoxResult.Cancel)
                 {
-                    this.tabControl.SelectedTab = tabProfile;
+                    this.buttonRemoveFromList.SelectedTab = tabProfile;
                     this.textBoxPost.Text = post;
                     listBoxCustomPosts.ClearSelected();
                 }
@@ -544,38 +548,45 @@ namespace FacebookWinFormsApp
 
         private void buttonChooseCustomedPost_Click(object sender, EventArgs e)
         {
-            tabControl.SelectedTab = tabCustomPost;
+            buttonRemoveFromList.SelectedTab = tabCustomPost;
         }
 
-        private void listBoxGroups_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBoxGroups.SelectedItem != null)
-            {
-                Group selectedGroup = listBoxGroups.SelectedItem as Group;
-                pictureBoxGroups.LoadAsync(selectedGroup.PictureNormalURL);
-            }
-        }
+        //private void listBoxGroups_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    //if (listBoxGroups.SelectedItem != null)
+        //    //{
+        //    //    Group selectedGroup = listBoxGroups.SelectedItem as Group;
+        //    //    pictureBoxGroups.LoadAsync(selectedGroup.PictureNormalURL);
+        //    //}
+
+        //    //if (listBoxGroups.SelectedItem != null)
+        //    //{
+        //    //    groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
+        //    //}
+        //    groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
+        //}
 
         private void buttonFetchGroups_Click(object sender, EventArgs e)
         {
-            listBoxGroups.Items.Clear();
-            listBoxGroups.DisplayMember = "Name";
-            try
-            {
-                foreach (Group group in LoginFacade.LoginUser.Groups)
-                {
-                    listBoxGroups.Items.Add(group);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            //listBoxGroups.Items.Clear();
+            //listBoxGroups.DisplayMember = "Name";
+            //try
+            //{
+            //    foreach (Group group in LoginFacade.LoginUser.Groups)
+            //    {
+            //        listBoxGroups.Items.Add(group);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
 
-            if (listBoxGroups.Items.Count == 0)
-            {
-                MessageBox.Show("No groups to fetch");
-            }
+            //if (listBoxGroups.Items.Count == 0)
+            //{
+            //    MessageBox.Show("No groups to fetch");
+            //}
+            groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
         }
     }
 }

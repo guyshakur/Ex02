@@ -10,10 +10,7 @@ namespace FacebookWinFormsApp
         private bool m_RememberUser;
         private string m_LastAcsessToken;
 
-        static AppSettings()
-        {
-        }
-
+        
         private AppSettings()
         {
         }
