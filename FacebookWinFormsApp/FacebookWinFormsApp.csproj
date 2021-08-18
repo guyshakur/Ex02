@@ -102,7 +102,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Builder\BirthdayActivity.cs" />
+    <Compile Include="Builder\BirthdayActivityBuilder.cs" />
+    <Compile Include="Builder\BirthDayManager.cs" />
+    <Compile Include="Builder\CloseFriendsBirthdayActivityBuilder.cs" />
+    <Compile Include="Builder\Factory\BirthdayActivityBuilderFactory.cs" />
+    <Compile Include="Builder\FarFriendsActivityBirthdayBuilder.cs" />
+    <Compile Include="Builder\IBirthday.cs" />
     <Compile Include="Facade\LoginFacade.cs" />
+    <Compile Include="Proxy\HebrewDateDetails.cs" />
+    <Compile Include="Proxy\MonthCalendarProxy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils\AppSettings.cs" />
     <Compile Include="CustomTextFeature\CustomText.cs" />
     <Compile Include="Utils\XmlFileUtils.cs" />
@@ -145,7 +156,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\FacebookWrapper.ObjectModel.FriendList.datasource" />
     <None Include="Properties\DataSources\FacebookWrapper.ObjectModel.Group.datasource" />
+    <None Include="Properties\DataSources\FacebookWrapper.ObjectModel.User.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

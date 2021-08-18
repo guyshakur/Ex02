@@ -10,6 +10,7 @@ using FacebookWinFormsApp.CostumText;
 using WPFCustomMessageBox;
 using MessageBox = System.Windows.Forms.MessageBox;
 using System.Threading;
+using FacebookWinFormsApp.Builder;
 
 namespace FacebookWinFormsApp
 {
@@ -386,6 +387,8 @@ namespace FacebookWinFormsApp
                 labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}";
                 labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}";
                 pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL;
+                DateTime birthday = DateTime.ParseExact(i_Friend.Birthday, "MM/d/yyyy", null);
+                monthCalendarBirthday.SetDate(birthday);
             }
         }
 
@@ -508,10 +511,7 @@ namespace FacebookWinFormsApp
             {
                 try
                 {
-                    foreach (User user in LoginFacade.LoginUser.Friends)
-                    {
-                        listBoxFriends.Items.Add(user);
-                    }
+                    friendListBindingSource.DataSource = LoginFacade.LoginUser.Friends;
                 }
                 catch (Exception exception)
                 {
@@ -587,6 +587,60 @@ namespace FacebookWinFormsApp
             //    MessageBox.Show("No groups to fetch");
             //}
             groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
+        }
+
+        private void buttonMakeBirthday_Click(object sender, EventArgs e)
+        {
+            makeBirthday();
+        }
+
+        private void makeBirthday()
+        {
+            if (listBoxFriends.SelectedItem != null && (radioButtonCloseFriend.Checked || radioButtonFarFriend.Checked))
+            {
+                try
+                {
+                    eBuilderType eBuilderType;
+                    if (radioButtonCloseFriend.Checked)
+                    {
+                        eBuilderType = eBuilderType.CloseFriend;
+                    }
+                    else
+                    {
+                        eBuilderType = eBuilderType.FarFriend;
+                    }
+                    BirthdayManager birthdayManager = new BirthdayManager(eBuilderType, LoginFacade.LoginUser, listBoxFriends.SelectedItem);
+                    birthdayManager.ConstructHappyBirthdayActivity();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else if (listBoxFriends.SelectedItem == null)
+            {
+                MessageBox.Show("please choose friend");
+            }
+            else
+            {
+                MessageBox.Show("please choose level of friendly");
+            }
+        }
+
+        private void radioButtonFarFriend_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonFarFriend.Checked)
+            {
+                radioButtonCloseFriend.Checked = false;
+            }
+        }
+
+        private void radioButtonCloseFriend_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonCloseFriend.Checked)
+            {
+                radioButtonFarFriend.Checked = false;
+            }
         }
     }
 }
