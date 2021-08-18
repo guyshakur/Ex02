@@ -41,7 +41,7 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.listBoxFriends = new System.Windows.Forms.ListBox();
             this.friendListBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.monthCalendarBirthday = new System.Windows.Forms.MonthCalendar();
+            this.monthCalendarBirthday = new Proxy.MonthCalendarProxy();
             this.radioButtonCloseFriend = new System.Windows.Forms.RadioButton();
             this.radioButtonFarFriend = new System.Windows.Forms.RadioButton();
             this.buttonMakeBirthday = new System.Windows.Forms.Button();
@@ -1385,7 +1385,7 @@
         private System.Windows.Forms.RadioButton radioButtonCloseFriend;
         private System.Windows.Forms.RadioButton radioButtonFarFriend;
         private System.Windows.Forms.Button buttonMakeBirthday;
-        private System.Windows.Forms.MonthCalendar monthCalendarBirthday;
+        private Proxy.MonthCalendarProxy monthCalendarBirthday;
         private System.Windows.Forms.Label labelFriendEmail;
         private System.Windows.Forms.PictureBox pictureBoxFriend;
         private System.Windows.Forms.Label labelFriendLastName;
