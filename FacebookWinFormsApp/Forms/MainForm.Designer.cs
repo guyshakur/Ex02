@@ -205,11 +205,13 @@
             // 
             // imageNormalPictureBox
             // 
+            this.imageNormalPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.imageNormalPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.imageNormalPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.groupBindingSource, "ImageNormal", true));
             this.imageNormalPictureBox.Location = new System.Drawing.Point(43, 24);
             this.imageNormalPictureBox.Name = "imageNormalPictureBox";
             this.imageNormalPictureBox.Size = new System.Drawing.Size(109, 114);
+            this.imageNormalPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.imageNormalPictureBox.TabIndex = 16;
             this.imageNormalPictureBox.TabStop = false;
             // 
