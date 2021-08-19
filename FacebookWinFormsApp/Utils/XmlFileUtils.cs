@@ -26,21 +26,38 @@ namespace FacebookWinFormsApp
     
         public static void SaveToFile(string i_FileName, object i_SerializeInstance)
         {
-            string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
+            //string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
 
-            using (Stream stream = new FileStream(@startupPath, FileMode.Truncate, FileAccess.ReadWrite))
+            //using (Stream stream = new FileStream(@startupPath, FileMode.Truncate, FileAccess.ReadWrite))
+            //{
+            //    XmlSerializer serlizer = new XmlSerializer(i_SerializeInstance.GetType());
+            //    serlizer.Serialize(stream, i_SerializeInstance);
+            //}
+            if(File.Exists(@".\" + i_FileName))
             {
-                XmlSerializer serlizer = new XmlSerializer(i_SerializeInstance.GetType());
-                serlizer.Serialize(stream, i_SerializeInstance);
+                createXmlFile(FileMode.Truncate, i_FileName, i_SerializeInstance);
+            }
+            else
+            {
+                createXmlFile(FileMode.Create, i_FileName, i_SerializeInstance);
+            }
+        }
+
+        private static void createXmlFile(FileMode i_FileMode, string i_FileName, object i_SerializeInstance)
+        {
+            using (Stream stream = new FileStream(@".\" + i_FileName, i_FileMode))
+            {
+                XmlSerializer serializer = new XmlSerializer(i_SerializeInstance.GetType());
+                serializer.Serialize(stream, i_SerializeInstance);
             }
         }
 
         public static object LoadFile(string i_FileName, object i_SerializeInstance)
         {
             object obj = null;
-            string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
+            //string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
 
-            using (Stream stream = new FileStream(@startupPath, FileMode.Open, FileAccess.ReadWrite))
+            using (Stream stream = new FileStream(@".\" + i_FileName, FileMode.Open, FileAccess.ReadWrite))
             {
                 XmlSerializer serlizer = new XmlSerializer(i_SerializeInstance.GetType());
                 obj = serlizer.Deserialize(stream);

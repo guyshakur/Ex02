@@ -11,13 +11,13 @@ namespace FacebookWinFormsApp.Proxy
 {
     public class MonthCalendarProxy : MonthCalendar
     {
-        public new void SetDate(DateTime i_Date)
+        public void SetDate(DateTime i_Date)
         {
             DateRangeEventArgs dateRangeEventArgs = new DateRangeEventArgs(i_Date, i_Date);
             base.OnDateSelected(dateRangeEventArgs);
             showHebrewDate(dateRangeEventArgs, "יום ההולדת העברי הוא ");
             DateTime birthdayCurrentYearDate = i_Date.AddYears(DateTime.Today.Year - i_Date.Year);
-            base.SetDate(birthdayCurrentYearDate);
+            base.Invoke(new Action( ()=>base.SetDate(birthdayCurrentYearDate)));
         }
 
         protected override void OnDateSelected(DateRangeEventArgs i_DateRangeEventArgs)

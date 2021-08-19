@@ -380,15 +380,21 @@ namespace FacebookWinFormsApp
         {
             if (i_Friend != null)
             {
-
-                labelFriendFirstName.Text = $"First Name: {i_Friend.FirstName}";
-                labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}";
-                labelFriendEmail.Text = $"Email: {i_Friend.Email}";
-                labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}";
-                labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}";
-                pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL;
+                labelFriendFirstName.Invoke(new Action(() => labelFriendFirstName.Text=$"First Name: {i_Friend.FirstName}"));
+                labelFriendLastName.Invoke(new Action(() => labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}"));
+                labelFriendEmail.Invoke(new Action(() => labelFriendEmail.Text = $"Email: {i_Friend.Email}"));
+                labelFriendGender.Invoke(new Action(() => labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}"));
+                labelFriendBirthday.Invoke(new Action(() => labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}"));
+                //labelFriendFirstName.Text = $"First Name: {i_Friend.FirstName}";
+                //labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}";
+                //labelFriendEmail.Text = $"Email: {i_Friend.Email}";
+                //labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}";
+                //labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}";
+                pictureBoxFriend.Invoke(new Action(() => pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL));
+                //pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL;
                 DateTime birthday = DateTime.ParseExact(i_Friend.Birthday, "MM/d/yyyy", null);
                 monthCalendarBirthday.SetDate(birthday);
+                
             }
         }
 
@@ -479,8 +485,7 @@ namespace FacebookWinFormsApp
             }
             catch (Exception ex)
             {
-                //m_customText.SaveToFile();
-                throw new Exception(ex.Message);
+                m_customText.SaveToFile();
             }
         }
 

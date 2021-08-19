@@ -173,9 +173,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomMessages.txt" />
     <Content Include="Pics\logo.png" />
-    <Content Include="Settings.txt" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
