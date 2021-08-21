@@ -1,5 +1,4 @@
-﻿using FacebookWrapper.ObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,26 +6,34 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Drawing;
+using FacebookWrapper.ObjectModel;
+
 namespace FacebookWinFormsApp.Proxy
 {
     public class MonthCalendarProxy : MonthCalendar
     {
-        public void SetDate(DateTime i_Date)
+        public static HebrewDateDetails GetHebrewDateDetails(string i_GregorianDate)
+        {
+            string url = $@"https://www.hebcal.com/converter?cfg=json&start={i_GregorianDate}&end={i_GregorianDate}&g2h=1";
+            return JsonUtils.GetApiDetailsFromJsonElement<HebrewDateDetails>(url);
+        }
+
+        public new void SetDate(DateTime i_Date)
         {
             DateRangeEventArgs dateRangeEventArgs = new DateRangeEventArgs(i_Date, i_Date);
             base.OnDateSelected(dateRangeEventArgs);
             showHebrewDate(dateRangeEventArgs, "יום ההולדת העברי הוא ");
             DateTime birthdayCurrentYearDate = i_Date.AddYears(DateTime.Today.Year - i_Date.Year);
-            base.Invoke(new Action( ()=>base.SetDate(birthdayCurrentYearDate)));
+            Invoke(new Action(() => base.SetDate(birthdayCurrentYearDate)));
         }
 
         protected override void OnDateSelected(DateRangeEventArgs i_DateRangeEventArgs)
         {
             base.OnDateSelected(i_DateRangeEventArgs);
-            showHebrewDate(i_DateRangeEventArgs,"התאריך העברי הוא ");
+            showHebrewDate(i_DateRangeEventArgs, "התאריך העברי הוא ");
         }
 
-        private void showHebrewDate(DateRangeEventArgs i_DateRangeEventArgs,string i_PrefixMessage)
+        private void showHebrewDate(DateRangeEventArgs i_DateRangeEventArgs, string i_PrefixMessage)
         {
             try
             {
@@ -34,8 +41,7 @@ namespace FacebookWinFormsApp.Proxy
             }
             catch (Exception)
             {
-
-            }   
+            }
         }
 
         private string makeDayForApi(DateRangeEventArgs i_DateRangeEventArgs)
@@ -62,13 +68,5 @@ namespace FacebookWinFormsApp.Proxy
 
             return gregorianDate.ToString();
         }
-
-        public static HebrewDateDetails GetHebrewDateDetails(string i_GregorianDate)
-        {
-            string url = $@"https://www.hebcal.com/converter?cfg=json&start={i_GregorianDate}&end={i_GregorianDate}&g2h=1";
-            return JsonUtils.GetApiDetailsFromJsonElement<HebrewDateDetails>(url);
-        }
     }
 }
-
-

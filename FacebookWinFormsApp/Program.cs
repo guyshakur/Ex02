@@ -24,7 +24,6 @@ namespace FacebookWinFormsApp
             try
             {
                 loginFacade.AppSettings = AppSettings.LoadFile();
-                //formLoginPage.AppSettings = AppSettings.LoadFile();
                 if (!string.IsNullOrEmpty(loginFacade.AppSettings.LastAcsessToken) && loginFacade.AppSettings.RememberUser)
                 {
                     try
@@ -33,7 +32,7 @@ namespace FacebookWinFormsApp
                         MainForm mainForm = new MainForm(loginFacade.LoginResult.LoggedInUser);
                         mainForm.ShowDialog();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         formLoginPage.ShowDialog();
                     }
@@ -43,7 +42,7 @@ namespace FacebookWinFormsApp
                     formLoginPage.ShowDialog();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 formLoginPage.ShowDialog();
             }

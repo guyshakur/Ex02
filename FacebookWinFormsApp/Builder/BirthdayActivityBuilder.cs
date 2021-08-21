@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace FacebookWinFormsApp.Builder
 {
-    public interface BirthdayActivityBuilder
+    public interface IBirthdayActivityBuilder
     {
        void BuildAlbum();
+
        void BuildStatus();
+
        BirthdayActivity BirthdayActivity { get; }
     }
 }

@@ -7,14 +7,6 @@ namespace FacebookWinFormsApp
     {
         private static readonly XmlFileUtils r_FileUtilsInstance = new XmlFileUtils();
 
-        static XmlFileUtils()
-        {
-        }
-
-        private XmlFileUtils()
-        {
-        }
-
         public static XmlFileUtils FileUtilsInstance
         {
             get
@@ -22,17 +14,9 @@ namespace FacebookWinFormsApp
                 return r_FileUtilsInstance;
             }
         }
-
     
         public static void SaveToFile(string i_FileName, object i_SerializeInstance)
         {
-            //string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
-
-            //using (Stream stream = new FileStream(@startupPath, FileMode.Truncate, FileAccess.ReadWrite))
-            //{
-            //    XmlSerializer serlizer = new XmlSerializer(i_SerializeInstance.GetType());
-            //    serlizer.Serialize(stream, i_SerializeInstance);
-            //}
             if(File.Exists(@".\" + i_FileName))
             {
                 createXmlFile(FileMode.Truncate, i_FileName, i_SerializeInstance);
@@ -55,7 +39,6 @@ namespace FacebookWinFormsApp
         public static object LoadFile(string i_FileName, object i_SerializeInstance)
         {
             object obj = null;
-            //string startupPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, i_FileName);
 
             using (Stream stream = new FileStream(@".\" + i_FileName, FileMode.Open, FileAccess.ReadWrite))
             {

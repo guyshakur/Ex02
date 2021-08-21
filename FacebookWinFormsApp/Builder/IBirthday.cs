@@ -9,6 +9,7 @@ namespace FacebookWinFormsApp.Builder
     public interface IBirthday
     {
         void SetHappyBirthdayBlessing(string i_BirthdayBlessing);
+
         void SetBirthdayAlbum(string i_BirthdayAlbum);
     }
 }

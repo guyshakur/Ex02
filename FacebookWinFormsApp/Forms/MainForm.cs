@@ -3,36 +3,30 @@ using System.Windows;
 using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Threading;
 using FacebookWrapper.ObjectModel;
 using FacebookWinFormsApp.WeatherFeature;
 using FacebookWinFormsApp.FinanceFeature;
 using FacebookWinFormsApp.CostumText;
+using FacebookWinFormsApp.Builder;
 using WPFCustomMessageBox;
 using MessageBox = System.Windows.Forms.MessageBox;
-using System.Threading;
-using FacebookWinFormsApp.Builder;
 
 namespace FacebookWinFormsApp
 {
     public partial class MainForm : Form
     {
-        public LoginFacade LoginFacade { get; set; }
         private readonly List<object> r_LastPostsCollection = new List<object>();
+
+        public LoginFacade LoginFacade { get; set; }
 
         public MainForm(User m_LoginUser)
         {
-            //r_LoggedUser = m_LoginUser;
-            //InitializeComponent();
-            //fetchLoginDetails();
-            //new Thread(fetchLoginDetails).Start();
             LoginFacade = new LoginFacade();
             LoginFacade.LoginUser = m_LoginUser;
-
         }
 
-
-        public CustomText m_customText { get; set; }
-
+        public CustomText CustomText { get; set; }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -40,9 +34,6 @@ namespace FacebookWinFormsApp
             fillCustomPostsBoxFromFile();
             fetchLoginDetails();
         }
-
-
-
 
         private void fetchLoginDetails()
         {
@@ -53,7 +44,6 @@ namespace FacebookWinFormsApp
             try
             {
                 fetchWeatherDetails(LoginFacade.LoginUser.Location.Name);
-                //fetchWeatherDetails(r_LoggedUser.Location.Name);
             }
             catch (Exception ex)
             {
@@ -85,25 +75,21 @@ namespace FacebookWinFormsApp
 
         private void fetchSelfDetails()
         {
-            // labelFirstName.Invoke(new Action(() => labelFirstName.Text += LoginFacade.LoginUser.InterestedIn[0].ToString()));
             labelFirstName.Invoke(new Action(() => labelFirstName.Text += LoginFacade.LoginUser.FirstName));
             labelLastName.Invoke(new Action(() => labelLastName.Text += LoginFacade.LoginUser.LastName));
             labelEmail.Invoke(new Action(() => labelEmail.Text += LoginFacade.LoginUser.Email));
             labelGender.Invoke(new Action(() => labelGender.Text += LoginFacade.LoginUser.Gender.ToString()));
             labelBirthday.Invoke(new Action(() => labelBirthday.Text += LoginFacade.LoginUser.Birthday));
-
         }
 
         private void fetchLikedPages()
         {
-            //listBoxLikedPages.Items.Clear();
             listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Clear()));
 
             try
             {
                 foreach (Page page in LoginFacade.LoginUser.LikedPages)
                 {
-                    //listBoxLikedPages.Items.Add(page.Name);
                     listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Add(page.Name)));
                 }
             }
@@ -115,10 +101,8 @@ namespace FacebookWinFormsApp
             if (listBoxLikedPages.Items.Count == 0)
             {
                 listBoxLikedPages.Invoke(new Action(() => listBoxLikedPages.Items.Add("There are no liked pages for this user")));
-                //listBoxLikedPages.Items.Add("There are no liked pages for this user");
             }
         }
-
 
         private void buttonLogOut_Click(object sender, EventArgs e)
         {
@@ -142,22 +126,14 @@ namespace FacebookWinFormsApp
         private void fetchPosts()
         {
             LoginFacade.LoginUser.ReFetch();
-            //listBoxPosts.Items.Clear();
             listBoxPosts.Invoke(new Action(() => listBoxPosts.Items.Clear()));
-            // listBoxComments.Invoke(new Action(() => listBoxComments.Items.Clear()));
-            //listBoxComments.Items.Clear();
             listBoxPosts.Invoke(new Action(() => listBoxPosts.DisplayMember = "Message"));
-            //listBoxPosts.DisplayMember = "Message";
-
-
-
             try
             {
                 foreach (Post post in LoginFacade.LoginUser.Posts)
                 {
                     if (post.Message != null)
                     {
-                        //listBoxPosts.Items.Add(post);
                         listBoxPosts.Invoke(new Action(() => listBoxPosts.Items.Add(post)));
                     }
                 }
@@ -245,13 +221,11 @@ namespace FacebookWinFormsApp
         {
             Page selected = LoginFacade.LoginUser.LikedPages[listBoxLikedPages.SelectedIndex];
             new Thread(() => webBrowserPages.Navigate(selected.URL)).Start();
-
         }
 
         private void listBoxPhotos_SelectedIndexChanged(object sender, EventArgs e)
         {
             new Thread(listBoxPhotosSelectedPhoto).Start();
-
         }
 
         private void listBoxPhotosSelectedPhoto()
@@ -261,7 +235,6 @@ namespace FacebookWinFormsApp
                 Photo selectedPhoto = listBoxPhotos.SelectedItem as Photo;
                 if (selectedPhoto != null)
                 {
-
                     pictureBoxPhoto.ImageLocation = selectedPhoto.PictureNormalURL;
                     pictureBoxPhoto.SizeMode = PictureBoxSizeMode.StretchImage;
                     listBoxPhotosComments.Invoke(new Action(() => listBoxPhotosComments.DataSource = selectedPhoto.Comments));
@@ -276,8 +249,6 @@ namespace FacebookWinFormsApp
 
         private void fetchAlbums()
         {
-            //listBoxAlbums.Items.Clear();
-            //listBoxAlbums.DisplayMember = "Name";
             listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Clear()));
             listBoxAlbums.Invoke(new Action(() => listBoxAlbums.DisplayMember = "Name"));
 
@@ -285,7 +256,6 @@ namespace FacebookWinFormsApp
             {
                 foreach (Album album in LoginFacade.LoginUser.Albums)
                 {
-                    //listBoxAlbums.Items.Add(album);
                     listBoxAlbums.Invoke(new Action(() => listBoxAlbums.Items.Add(album)));
                 }
             }
@@ -311,7 +281,6 @@ namespace FacebookWinFormsApp
                 foreach (Photo photo in albumSelected.Photos)
                 {
                     listBoxPhotos.Items.Add(photo);
-                    //listBoxPhotos.Invoke(new Action(() => listBoxPhotos.Items.Add(photo)));
                 }
             }
             catch (Exception exception)
@@ -380,21 +349,14 @@ namespace FacebookWinFormsApp
         {
             if (i_Friend != null)
             {
-                labelFriendFirstName.Invoke(new Action(() => labelFriendFirstName.Text=$"First Name: {i_Friend.FirstName}"));
+                labelFriendFirstName.Invoke(new Action(() => labelFriendFirstName.Text = $"First Name: {i_Friend.FirstName}"));
                 labelFriendLastName.Invoke(new Action(() => labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}"));
                 labelFriendEmail.Invoke(new Action(() => labelFriendEmail.Text = $"Email: {i_Friend.Email}"));
                 labelFriendGender.Invoke(new Action(() => labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}"));
                 labelFriendBirthday.Invoke(new Action(() => labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}"));
-                //labelFriendFirstName.Text = $"First Name: {i_Friend.FirstName}";
-                //labelFriendLastName.Text = $"Last Name: {i_Friend.LastName}";
-                //labelFriendEmail.Text = $"Email: {i_Friend.Email}";
-                //labelFriendGender.Text = $"Gender: {i_Friend.Gender.ToString()}";
-                //labelFriendBirthday.Text = $"Birthday: {i_Friend.Birthday}";
                 pictureBoxFriend.Invoke(new Action(() => pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL));
-                //pictureBoxFriend.ImageLocation = i_Friend.PictureLargeURL;
                 DateTime birthday = DateTime.ParseExact(i_Friend.Birthday, "MM/d/yyyy", null);
                 monthCalendarBirthday.SetDate(birthday);
-                
             }
         }
 
@@ -430,9 +392,9 @@ namespace FacebookWinFormsApp
         {
             if (!string.IsNullOrEmpty(textBoxCustomPost.Text))
             {
-                m_customText.createMessageAndAddToList(textBoxCustomPost.Text);
-                listBoxCustomPosts.Items.Add(m_customText.TextMessage.ElementAt(m_customText.TextMessage.Count - 1));
-                m_customText.SaveToFile();
+                CustomText.createMessageAndAddToList(textBoxCustomPost.Text);
+                listBoxCustomPosts.Items.Add(CustomText.TextMessage.ElementAt(CustomText.TextMessage.Count - 1));
+                CustomText.SaveToFile();
                 textBoxCustomPost.Clear();
             }
         }
@@ -447,45 +409,45 @@ namespace FacebookWinFormsApp
 
         private void buttonRemoveAllCustomPosts_Click(object sender, EventArgs e)
         {
-            if (m_customText != null)
+            if (CustomText != null)
             {
-                if (m_customText.TextMessage.Count != 0 && listBoxCustomPosts != null)
+                if (CustomText.TextMessage.Count != 0 && listBoxCustomPosts != null)
                 {
                     listBoxCustomPosts.Items.Clear();
-                    m_customText.ClearMessages();
-                    m_customText.SaveToFile();
+                    CustomText.ClearMessages();
+                    CustomText.SaveToFile();
                 }
             }
         }
 
         private void buttonRemoveCustomPost_Click(object sender, EventArgs e)
         {
-            if (m_customText != null)
+            if (CustomText != null)
             {
-                if (m_customText.TextMessage.Count != 0 && listBoxCustomPosts.SelectedItem != null)
+                if (CustomText.TextMessage.Count != 0 && listBoxCustomPosts.SelectedItem != null)
                 {
-                    m_customText.RemoveMessageFromList(listBoxCustomPosts.SelectedIndex);
+                    CustomText.RemoveMessageFromList(listBoxCustomPosts.SelectedIndex);
                     listBoxCustomPosts.Items.Remove(listBoxCustomPosts.SelectedItem);
-                    m_customText.SaveToFile();
+                    CustomText.SaveToFile();
                 }
             }
         }
 
         private void fillCustomPostsBoxFromFile()
         {
-            m_customText = CustomText.CustomTextInstance;
+            CustomText = CustomText.CustomTextInstance;
             try
             {
-                m_customText = CustomText.LoadFile();
+                CustomText = CustomText.LoadFile();
 
-                foreach (string message in m_customText.TextMessage)
+                foreach (string message in CustomText.TextMessage)
                 {
                     listBoxCustomPosts.Items.Add(message);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                m_customText.SaveToFile();
+                CustomText.SaveToFile();
             }
         }
 
@@ -496,16 +458,16 @@ namespace FacebookWinFormsApp
 
         private void editPost()
         {
-            if (m_customText != null)
+            if (CustomText != null)
             {
-                if (m_customText.TextMessage.Count != 0 && listBoxCustomPosts.SelectedItem != null)
+                if (CustomText.TextMessage.Count != 0 && listBoxCustomPosts.SelectedItem != null)
                 {
                     int index = listBoxCustomPosts.SelectedIndex;
                     textBoxCustomPost.Text = listBoxCustomPosts.SelectedItem.ToString();
                     textBoxCustomPost.Focus();
-                    m_customText.RemoveMessageFromList(index);
+                    CustomText.RemoveMessageFromList(index);
                     listBoxCustomPosts.Items.RemoveAt(index);
-                    m_customText.SaveToFile();
+                    CustomText.SaveToFile();
                 }
             }
         }
@@ -556,41 +518,8 @@ namespace FacebookWinFormsApp
             buttonRemoveFromList.SelectedTab = tabCustomPost;
         }
 
-        //private void listBoxGroups_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    //if (listBoxGroups.SelectedItem != null)
-        //    //{
-        //    //    Group selectedGroup = listBoxGroups.SelectedItem as Group;
-        //    //    pictureBoxGroups.LoadAsync(selectedGroup.PictureNormalURL);
-        //    //}
-
-        //    //if (listBoxGroups.SelectedItem != null)
-        //    //{
-        //    //    groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
-        //    //}
-        //    groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
-        //}
-
         private void buttonFetchGroups_Click(object sender, EventArgs e)
         {
-            //listBoxGroups.Items.Clear();
-            //listBoxGroups.DisplayMember = "Name";
-            //try
-            //{
-            //    foreach (Group group in LoginFacade.LoginUser.Groups)
-            //    {
-            //        listBoxGroups.Items.Add(group);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
-
-            //if (listBoxGroups.Items.Count == 0)
-            //{
-            //    MessageBox.Show("No groups to fetch");
-            //}
             groupBindingSource.DataSource = LoginFacade.LoginUser.Groups;
         }
 
@@ -614,6 +543,7 @@ namespace FacebookWinFormsApp
                     {
                         eBuilderType = eBuilderType.FarFriend;
                     }
+
                     BirthdayManager birthdayManager = new BirthdayManager(eBuilderType, LoginFacade.LoginUser, listBoxFriends.SelectedItem);
                     birthdayManager.ConstructHappyBirthdayActivity();
                 }

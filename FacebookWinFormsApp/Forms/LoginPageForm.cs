@@ -14,6 +14,7 @@ namespace FacebookWinFormsApp
             LoginFacade = new LoginFacade();
             InitializeComponent();
         }
+
         private void buttonLogin_Click(object sender, EventArgs e)
         {
             if(LoginFacade.Login(rememberMeChecked.Checked))
@@ -27,10 +28,7 @@ namespace FacebookWinFormsApp
             else
             {
                 MessageBox.Show(LoginFacade.LoginResult.ErrorMessage, "Login Failed");
-            }
-                
-               
-        }
-        
+            }      
+        }    
     }
 }

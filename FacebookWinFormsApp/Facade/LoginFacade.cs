@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Windows.Forms;
+
 using FacebookWrapper;
 using FacebookWrapper.ObjectModel;
 
 namespace FacebookWinFormsApp
-
 {
     public class LoginFacade
     {
-        //private User m_LoginUser;
-        //private LoginResult m_LoginResult;
-        //private AppSettings m_AppSettings;
         public AppSettings AppSettings { get; set; }
+
         public User LoginUser { get; set; }
+
         public LoginResult LoginResult { get; set; }
 
         public LoginFacade()
@@ -26,7 +20,7 @@ namespace FacebookWinFormsApp
             FacebookService.s_CollectionLimit = 100;
         }
 
-        public bool Login(bool m_rememberedUser)
+        public bool Login(bool i_RememberedUser)
         {
             LoginResult = FacebookService.Login(
                     "226428995869586",
@@ -40,14 +34,15 @@ namespace FacebookWinFormsApp
                     "user_location",
                     "user_gender",
                     "groups_access_member_info");
-            if(m_rememberedUser)
+            if (i_RememberedUser)
             {
                 AppSettings.RememberUser = true;
                 setLastAccessToken();
             }
+
             AppSettings.SaveToFile();
             LoginUser = LoginResult.LoggedInUser;
-            return LoginResult.AccessToken!=null;
+            return LoginResult.AccessToken != null;
         }
 
         private void setLastAccessToken()
@@ -62,8 +57,6 @@ namespace FacebookWinFormsApp
             AppSettings.RememberUser = false;
             AppSettings.SaveToFile();
             LoginResult = null;
-
-
         }
     }
 }

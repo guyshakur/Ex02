@@ -8,12 +8,13 @@ namespace FacebookWinFormsApp.Builder
 {
     public class BirthdayManager
     {
-        private BirthdayActivityBuilder m_BirthdayActivityBuilder;
+        private IBirthdayActivityBuilder m_BirthdayActivityBuilder;
 
         public BirthdayManager(params object[] i_Params)
         {
             m_BirthdayActivityBuilder = BirthdayActivityBuilderFactory.CreateBuilder(i_Params);
         }
+
         public BirthdayActivity BirthdayActivity => m_BirthdayActivityBuilder.BirthdayActivity;
 
         public void ConstructHappyBirthdayActivity()

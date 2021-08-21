@@ -35,12 +35,6 @@
             </PropertyUISettings>
          </TypeUISetting>
       </GenericObjectDataSource>
-      <GenericObjectDataSource DisplayName="Events" Version="1.0">
-         <TypeInfo>FacebookWrapper.ObjectModel.Event, FbGraphApiWrapper, Version=8.0.2.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
-      </GenericObjectDataSource>
-      <GenericObjectDataSource DisplayName="WallPosts" Version="1.0">
-         <TypeInfo>FacebookWrapper.ObjectModel.Post, FbGraphApiWrapper, Version=8.0.2.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
-      </GenericObjectDataSource>
    </Children>
    <TypeInfo>FacebookWrapper.ObjectModel.Group, FbGraphApiWrapper, Version=8.0.2.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
    <TypeUISetting>

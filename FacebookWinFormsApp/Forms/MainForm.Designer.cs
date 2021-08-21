@@ -1,6 +1,6 @@
 ﻿namespace FacebookWinFormsApp
 {
-    partial class MainForm
+    public partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -41,7 +41,7 @@
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.listBoxFriends = new System.Windows.Forms.ListBox();
             this.friendListBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.monthCalendarBirthday = new Proxy.MonthCalendarProxy();
+            this.monthCalendarBirthday = new FacebookWinFormsApp.Proxy.MonthCalendarProxy();
             this.radioButtonCloseFriend = new System.Windows.Forms.RadioButton();
             this.radioButtonFarFriend = new System.Windows.Forms.RadioButton();
             this.buttonMakeBirthday = new System.Windows.Forms.Button();
@@ -171,7 +171,7 @@
             tabFriendsAndGroups.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             tabFriendsAndGroups.Name = "tabFriendsAndGroups";
             tabFriendsAndGroups.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            tabFriendsAndGroups.Size = new System.Drawing.Size(1115, 590);
+            tabFriendsAndGroups.Size = new System.Drawing.Size(1130, 595);
             tabFriendsAndGroups.TabIndex = 5;
             tabFriendsAndGroups.Text = "Friends & Groups";
             // 
@@ -216,7 +216,8 @@
             // 
             this.imageNormalPictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.imageNormalPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.imageNormalPictureBox.Location = new System.Drawing.Point(57, 30);
+            this.imageNormalPictureBox.DataBindings.Add(new System.Windows.Forms.Binding("Image", this.groupBindingSource, "ImageNormal", true));
+            this.imageNormalPictureBox.Location = new System.Drawing.Point(60, 35);
             this.imageNormalPictureBox.Margin = new System.Windows.Forms.Padding(4);
             this.imageNormalPictureBox.Name = "imageNormalPictureBox";
             this.imageNormalPictureBox.Size = new System.Drawing.Size(144, 139);
@@ -418,7 +419,7 @@
             this.tabCustomPost.Location = new System.Drawing.Point(4, 25);
             this.tabCustomPost.Margin = new System.Windows.Forms.Padding(4);
             this.tabCustomPost.Name = "tabCustomPost";
-            this.tabCustomPost.Size = new System.Drawing.Size(1115, 590);
+            this.tabCustomPost.Size = new System.Drawing.Size(1130, 595);
             this.tabCustomPost.TabIndex = 7;
             this.tabCustomPost.Text = "Custom Post";
             // 
@@ -573,7 +574,7 @@
             this.tabFinance.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabFinance.Name = "tabFinance";
             this.tabFinance.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabFinance.Size = new System.Drawing.Size(1115, 590);
+            this.tabFinance.Size = new System.Drawing.Size(1130, 595);
             this.tabFinance.TabIndex = 6;
             this.tabFinance.Text = "Finance";
             // 
@@ -658,7 +659,7 @@
             this.tabAlbums.Location = new System.Drawing.Point(4, 25);
             this.tabAlbums.Margin = new System.Windows.Forms.Padding(4);
             this.tabAlbums.Name = "tabAlbums";
-            this.tabAlbums.Size = new System.Drawing.Size(1115, 590);
+            this.tabAlbums.Size = new System.Drawing.Size(1130, 595);
             this.tabAlbums.TabIndex = 3;
             this.tabAlbums.Text = "Albums";
             this.tabAlbums.UseVisualStyleBackColor = true;
@@ -686,8 +687,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.pictureBoxPhoto);
             this.splitContainer3.Panel2.Controls.Add(this.label4);
             this.splitContainer3.Panel2.Controls.Add(this.listBoxPhotosComments);
-            this.splitContainer3.Size = new System.Drawing.Size(1021, 476);
-            this.splitContainer3.SplitterDistance = 395;
+            this.splitContainer3.Size = new System.Drawing.Size(1109, 585);
+            this.splitContainer3.SplitterDistance = 429;
             this.splitContainer3.TabIndex = 9;
             // 
             // listBoxAlbums
@@ -707,10 +708,10 @@
             this.buttonFetchAlbums.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonFetchAlbums.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.buttonFetchAlbums.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonFetchAlbums.Location = new System.Drawing.Point(0, 443);
+            this.buttonFetchAlbums.Location = new System.Drawing.Point(0, 552);
             this.buttonFetchAlbums.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonFetchAlbums.Name = "buttonFetchAlbums";
-            this.buttonFetchAlbums.Size = new System.Drawing.Size(395, 33);
+            this.buttonFetchAlbums.Size = new System.Drawing.Size(429, 33);
             this.buttonFetchAlbums.TabIndex = 8;
             this.buttonFetchAlbums.Text = "Fetch Albums";
             this.buttonFetchAlbums.UseVisualStyleBackColor = false;
@@ -808,7 +809,7 @@
             this.tabPosts.Location = new System.Drawing.Point(4, 25);
             this.tabPosts.Margin = new System.Windows.Forms.Padding(4);
             this.tabPosts.Name = "tabPosts";
-            this.tabPosts.Size = new System.Drawing.Size(1115, 590);
+            this.tabPosts.Size = new System.Drawing.Size(1130, 595);
             this.tabPosts.TabIndex = 2;
             this.tabPosts.Text = "Posts";
             this.tabPosts.UseVisualStyleBackColor = true;
@@ -832,8 +833,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listBoxComments);
-            this.splitContainer2.Size = new System.Drawing.Size(1021, 476);
-            this.splitContainer2.SplitterDistance = 351;
+            this.splitContainer2.Size = new System.Drawing.Size(1109, 585);
+            this.splitContainer2.SplitterDistance = 381;
             this.splitContainer2.TabIndex = 52;
             // 
             // label7
@@ -884,10 +885,10 @@
             this.buttonFetchPosts.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.buttonFetchPosts.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.buttonFetchPosts.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.buttonFetchPosts.Location = new System.Drawing.Point(0, 448);
+            this.buttonFetchPosts.Location = new System.Drawing.Point(0, 557);
             this.buttonFetchPosts.Margin = new System.Windows.Forms.Padding(4);
             this.buttonFetchPosts.Name = "buttonFetchPosts";
-            this.buttonFetchPosts.Size = new System.Drawing.Size(351, 28);
+            this.buttonFetchPosts.Size = new System.Drawing.Size(381, 28);
             this.buttonFetchPosts.TabIndex = 4;
             this.buttonFetchPosts.Text = "Fetch Posts";
             this.buttonFetchPosts.UseVisualStyleBackColor = false;
@@ -912,7 +913,7 @@
             this.listBoxComments.Location = new System.Drawing.Point(0, 0);
             this.listBoxComments.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBoxComments.Name = "listBoxComments";
-            this.listBoxComments.Size = new System.Drawing.Size(666, 476);
+            this.listBoxComments.Size = new System.Drawing.Size(724, 585);
             this.listBoxComments.TabIndex = 50;
             // 
             // tabPages
@@ -922,7 +923,7 @@
             this.tabPages.Margin = new System.Windows.Forms.Padding(4);
             this.tabPages.Name = "tabPages";
             this.tabPages.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPages.Size = new System.Drawing.Size(1115, 590);
+            this.tabPages.Size = new System.Drawing.Size(1130, 595);
             this.tabPages.TabIndex = 1;
             this.tabPages.Text = "Pages";
             this.tabPages.UseVisualStyleBackColor = true;
@@ -1009,7 +1010,7 @@
             this.tabProfile.Margin = new System.Windows.Forms.Padding(4);
             this.tabProfile.Name = "tabProfile";
             this.tabProfile.Padding = new System.Windows.Forms.Padding(4);
-            this.tabProfile.Size = new System.Drawing.Size(1115, 590);
+            this.tabProfile.Size = new System.Drawing.Size(1130, 595);
             this.tabProfile.TabIndex = 0;
             this.tabProfile.Text = "Profile";
             // 
@@ -1212,7 +1213,7 @@
             this.buttonLogOut.BackColor = System.Drawing.Color.Red;
             this.buttonLogOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLogOut.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.buttonLogOut.Location = new System.Drawing.Point(832, 446);
+            this.buttonLogOut.Location = new System.Drawing.Point(931, 558);
             this.buttonLogOut.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogOut.Name = "buttonLogOut";
             this.buttonLogOut.Size = new System.Drawing.Size(195, 37);
@@ -1245,7 +1246,7 @@
             this.buttonRemoveFromList.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveFromList.Name = "buttonRemoveFromList";
             this.buttonRemoveFromList.SelectedIndex = 0;
-            this.buttonRemoveFromList.Size = new System.Drawing.Size(1123, 619);
+            this.buttonRemoveFromList.Size = new System.Drawing.Size(1138, 624);
             this.buttonRemoveFromList.TabIndex = 0;
             // 
             // MainForm

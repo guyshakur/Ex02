@@ -2,7 +2,7 @@
 
 namespace FacebookWinFormsApp
 {
-    partial class LoginPageForm
+    public partial class LoginPageForm
     {
         /// <summary>
         /// Required designer variable.

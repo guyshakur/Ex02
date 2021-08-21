@@ -1,17 +1,20 @@
-﻿using FacebookWrapper.ObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FacebookWrapper.ObjectModel;
 
 namespace FacebookWinFormsApp.Builder
 {
     public class BirthdayActivity : IBirthday
     {
         public Status Status { get; private set; }
+
         public Album Album { get; private set; }
+
         private User m_FromUser;
+
         private User m_ToUser;
 
         public BirthdayActivity(User i_FromUser, User i_ToUser)
