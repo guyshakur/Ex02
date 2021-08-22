@@ -18,7 +18,7 @@ namespace FacebookWinFormsApp
             FacebookService.s_UseForamttedToStrings = true;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
+            //bb
             LoginPageForm formLoginPage = new LoginPageForm();
             LoginFacade loginFacade = new LoginFacade();
             try
